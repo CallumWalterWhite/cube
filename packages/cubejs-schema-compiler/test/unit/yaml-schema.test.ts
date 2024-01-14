@@ -90,6 +90,33 @@ describe('Yaml Schema Testing', () => {
     }
   });
 
+  
+  it('null for string field', async () => {
+    const { compiler } = prepareYamlCompiler(
+      `cubes:
+      - name: my_cube
+        sql_table: my_table
+    
+        dimensions:
+          - name: agent_name
+            title: Agent Name
+            sql: agent_name
+            type: string
+            meta:
+              works: "123"
+              does_not_work: 456
+              does_not_work_either: !!int 789`
+    );
+
+    try {
+      await compiler.compile();
+
+      throw new Error('compile must return an error');
+    } catch (e: any) {
+      expect(e.message).toContain('Unexpected input during yaml transpiling: 456');
+    }
+  });
+
   it('unammed measure', async () => {
     const { compiler } = prepareYamlCompiler(
       `cubes:

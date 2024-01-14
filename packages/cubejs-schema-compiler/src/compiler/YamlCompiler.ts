@@ -154,7 +154,7 @@ export class YamlCompiler {
         }
       }
     }
-
+    console.log(typeof obj)
     if (propertyPath[propertyPath.length - 1] === 'extends') {
       const ast = this.parsePythonAndTranspileToJs(obj, errorsReport);
       return this.astIntoArrowFunction(ast, obj, cubeName, name => this.cubeDictionary.resolveCube(name));
